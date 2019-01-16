@@ -15,13 +15,12 @@ public:
     void itemMoved();
 
 public slots:
-    void shuffle();
     void zoomIn();
     void zoomOut();
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
-    void timerEvent(QTimerEvent *event) override;
+    void keyPressEvent(QKeyEvent *pEvent) override;
+    void timerEvent(QTimerEvent *) override;
 #if QT_CONFIG(wheelevent)
     void wheelEvent(QWheelEvent *event) override;
 #endif
@@ -30,6 +29,7 @@ protected:
 
 private:
     int m_timerId;
+    QGraphicsScene *mp_scene;
     Node *mp_centerNode;
 };
 

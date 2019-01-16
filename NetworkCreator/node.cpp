@@ -1,12 +1,15 @@
 #include "node.h"
 #include "edge.h"
 
+#include <QPainter>
+#include "graphwidget.h"
 
 Node::Node(GraphWidget *pGraph)
     : mp_graph(pGraph)
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
+    setFlag(ItemIsSelectable);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
 }
@@ -17,7 +20,15 @@ void Node::addEdge(Edge *pEdge)
     pEdge->adjust();
 }
 
-bool Node::advance()
+void Node::moveAround()
+{
+  if(!scene() || scene()->mouseGrabberItem() == this) {
+    m_newPos = pos();
+    return;
+  }
+}
+
+bool Node::advancePosition()
 {
     if(m_newPos == pos()) {
         return false;
@@ -27,20 +38,20 @@ bool Node::advance()
     return true;
 }
 
-QRect Node::boundingRect() const
+QRectF Node::boundingRect() const
 {
     qreal adjust = 2;
     return QRectF( -10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust);
 }
 
-QPaintPath Node::shape() const
+QPainterPath Node::shape() const
 {
     QPainterPath path;
     path.addEllipse(-10, -10, 20, 20);
     return path;
 }
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::darkGray);
@@ -57,7 +68,7 @@ QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange change, const QVaria
 {
     switch(change) {
     case ItemPositionChange:
-        foreach(Edge *edge, edgeList) {
+        foreach(Edge *edge, mp_edges) {
             edge->adjust();
         }
         mp_graph->itemMoved();

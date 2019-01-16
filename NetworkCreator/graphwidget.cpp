@@ -1,74 +1,72 @@
+#include <cmath>
+
+#include <QList>
+
 #include "graphwidget.h"
 #include "node.h"
 #include "edge.h"
 
-GraphWidget::GraphWidget(QWidget *parent ) {
-    : QGraphicsView(parent), timerId(0)
-{
-    QGraphicsScene *scene = new QGraphicsScene(this);
-    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
-    setScene(scene);
-    setCacheMode(CacheBackground);
-    setViewportUpdateMode(BoundingRectViewportUpdate);
-    setRenderHint(QPainter::Antialiasing);
-    setTransformationAnchor(AnchorUnderMouse);
-    scale(qreal(0.8), qreal(0.8));
-    setMinimumSize(400, 400);
-    setWindowTitle(tr("Elastic Nodes"));
+GraphWidget::GraphWidget(QWidget *parent)
+  : QGraphicsView(parent), m_timerId(0) {
+  mp_scene = new QGraphicsScene(this);
+  mp_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+  mp_scene->setSceneRect(-200, -200, 400, 400);
+  setScene(mp_scene);
+  setCacheMode(CacheBackground);
+  setViewportUpdateMode(BoundingRectViewportUpdate);
+  setRenderHint(QPainter::Antialiasing);
+  setTransformationAnchor(AnchorUnderMouse);
+  scale(qreal(0.8), qreal(0.8));
+  setMinimumSize(400, 400);
+  setWindowTitle(tr("NetworkCreator 3000"));
 
-    Node *node1 = new Node(this);
-    Node *node2 = new Node(this);
-    Node *node3 = new Node(this);
-    Node *node4 = new Node(this);
-    centerNode = new Node(this);
-    Node *node6 = new Node(this);
-    Node *node7 = new Node(this);
-    Node *node8 = new Node(this);
-    Node *node9 = new Node(this);
-    scene->addItem(node1);
-    scene->addItem(node2);
-    scene->addItem(node3);
-    scene->addItem(node4);
-    scene->addItem(centerNode);
-    scene->addItem(node6);
-    scene->addItem(node7);
-    scene->addItem(node8);
-    scene->addItem(node9);
-    scene->addItem(new Edge(node1, node2));
-    scene->addItem(new Edge(node2, node3));
-    scene->addItem(new Edge(node2, centerNode));
-    scene->addItem(new Edge(node3, node6));
-    scene->addItem(new Edge(node4, node1));
-    scene->addItem(new Edge(node4, centerNode));
-    scene->addItem(new Edge(centerNode, node6));
-    scene->addItem(new Edge(centerNode, node8));
-    scene->addItem(new Edge(node6, node9));
-    scene->addItem(new Edge(node7, node4));
-    scene->addItem(new Edge(node8, node7));
-    scene->addItem(new Edge(node9, node8));
+  Node *node1 = new Node(this);
+  Node *node2 = new Node(this);
+  Node *node3 = new Node(this);
+  Node *node4 = new Node(this);
+  mp_centerNode = new Node(this);
+  Node *node6 = new Node(this);
+  Node *node7 = new Node(this);
+  Node *node8 = new Node(this);
+  Node *node9 = new Node(this);
+  mp_scene->addItem(node1);
+  mp_scene->addItem(node2);
+  mp_scene->addItem(node3);
+  mp_scene->addItem(node4);
+  mp_scene->addItem(mp_centerNode);
+  mp_scene->addItem(node6);
+  mp_scene->addItem(node7);
+  mp_scene->addItem(node8);
+  mp_scene->addItem(node9);
+  mp_scene->addItem(new Edge(node1, node2));
+  mp_scene->addItem(new Edge(node2, node3));
+  mp_scene->addItem(new Edge(node2, mp_centerNode));
+  mp_scene->addItem(new Edge(node3, node6));
+  mp_scene->addItem(new Edge(node4, node1));
+  mp_scene->addItem(new Edge(node4, mp_centerNode));
+  mp_scene->addItem(new Edge(mp_centerNode, node6));
+  mp_scene->addItem(new Edge(mp_centerNode, node8));
+  mp_scene->addItem(new Edge(node6, node9));
+  mp_scene->addItem(new Edge(node7, node4));
+  mp_scene->addItem(new Edge(node8, node7));
+  mp_scene->addItem(new Edge(node9, node8));
 
-    node1->setPos(-50, -50);
-    node2->setPos(0, -50);
-    node3->setPos(50, -50);
-    node4->setPos(-50, 0);
-    centerNode->setPos(0, 0);
-    node6->setPos(50, 0);
-    node7->setPos(-50, 50);
-    node8->setPos(0, 50);
-    node9->setPos(50, 50);
+  node1->setPos(-50, -50);
+  node2->setPos(0, -50);
+  node3->setPos(50, -50);
+  node4->setPos(-50, 0);
+  mp_centerNode->setPos(0, 0);
+  node6->setPos(50, 0);
+  node7->setPos(-50, 50);
+  node8->setPos(0, 50);
+  node9->setPos(50, 50);
 }
 
 void GraphWidget::itemMoved()
 {
-    if (!timerId) {
-        timerId = startTimer(1000 / 25);
-    }
-}
-
-void GraphWidget::shuffle()
-{
-
+  if(!m_timerId) {
+    m_timerId = startTimer(1000 / 25);
+  }
 }
 
 void GraphWidget::zoomIn()
@@ -81,109 +79,73 @@ void GraphWidget::zoomOut()
 
 }
 
-void GraphWidget::keyPressEvent(QKeyEvent *event)
+void GraphWidget::keyPressEvent(QKeyEvent *pEvent)
 {
-    switch (event->key()) {
+  switch(pEvent->key()) {
     case Qt::Key_Up:
-        centerNode->moveBy(0, -20);
-        break;
+      mp_centerNode->moveBy(0, -20);
+      break;
     case Qt::Key_Down:
-        centerNode->moveBy(0, 20);
-        break;
+      mp_centerNode->moveBy(0, 20);
+      break;
     case Qt::Key_Left:
-        centerNode->moveBy(-20, 0);
-        break;
+      mp_centerNode->moveBy(-20, 0);
+      break;
     case Qt::Key_Right:
-        centerNode->moveBy(20, 0);
-        break;
+      mp_centerNode->moveBy(20, 0);
+      break;
     case Qt::Key_Plus:
-        zoomIn();
-        break;
+      zoomIn();
+      break;
     case Qt::Key_Minus:
-        zoomOut();
-        break;
-    case Qt::Key_Space:
-    case Qt::Key_Enter:
-        shuffle();
-        break;
+      zoomOut();
+      break;
     default:
-        QGraphicsView::keyPressEvent(event);
-    }
+      QGraphicsView::keyPressEvent(pEvent);
+      break;
+  }
 }
 
-void GraphWidget::timerEvent(QTimerEvent *event)
+void GraphWidget::timerEvent(QTimerEvent *)
 {
-    Q_UNUSED(event);
-
-    QList<Node *> nodes;
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (Node *node = qgraphicsitem_cast<Node *>(item))
-            nodes << node;
+  QList<Node *> nodes;
+  foreach(QGraphicsItem *pItem, mp_scene->items()) {
+    if(Node *pNode = qgraphicsitem_cast<Node *>(pItem)) {
+      nodes << pNode;
     }
+  }
 
-    foreach (Node *node, nodes)
-        node->calculateForces();
+  foreach(Node *pNode, nodes) {
+    pNode->moveAround();
+  }
 
-    bool itemsMoved = false;
-    foreach (Node *node, nodes) {
-        if (node->advancePosition())
-            itemsMoved = true;
+  bool itemsMoved = false;
+  foreach(Node *pNode, nodes) {
+    if(pNode->advancePosition()) {
+      itemsMoved = true;
     }
+  }
 
-    if (!itemsMoved) {
-        killTimer(timerId);
-        timerId = 0;
-    }
+  if(!itemsMoved) {
+    killTimer(m_timerId);
+    m_timerId = 0;
+  }
 }
 
-#if QT_CONFIG(wheelevent)
-void GraphWidget::wheelEvent(QWheelEvent *event) override {
-    scaleView(pow((double)2, -event->delta() / 240.0));
+void GraphWidget::wheelEvent(QWheelEvent *event) {
+  scaleView(std::pow(static_cast<double>(2), -event->delta() / 240.0));
 }
-#endif
 
-void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
+void GraphWidget::drawBackground(QPainter *, const QRectF &)
 {
-    Q_UNUSED(rect);
 
-    // Shadow
-    QRectF sceneRect = this->sceneRect();
-    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
-    QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
-    if (rightShadow.intersects(rect) || rightShadow.contains(rect))
-        painter->fillRect(rightShadow, Qt::darkGray);
-    if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
-        painter->fillRect(bottomShadow, Qt::darkGray);
-
-    // Fill
-    QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
-    gradient.setColorAt(0, Qt::white);
-    gradient.setColorAt(1, Qt::lightGray);
-    painter->fillRect(rect.intersected(sceneRect), gradient);
-    painter->setBrush(Qt::NoBrush);
-    painter->drawRect(sceneRect);
-
-    // Text
-    QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
-                    sceneRect.width() - 4, sceneRect.height() - 4);
-    QString message(tr("Click and drag the nodes around, and zoom with the mouse "
-                       "wheel or the '+' and '-' keys"));
-
-    QFont font = painter->font();
-    font.setBold(true);
-    font.setPointSize(14);
-    painter->setFont(font);
-    painter->setPen(Qt::lightGray);
-    painter->drawText(textRect.translated(2, 2), message);
-    painter->setPen(Qt::black);
-    painter->drawText(textRect, message);
 }
 
 void GraphWidget::scaleView(qreal scaleFactor)
 {
-    qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100)
-        return;
+  qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
+  if (factor < 0.07 || factor > 100)
+      return;
 
-    scale(scaleFactor, scaleFactor);
+  scale(scaleFactor, scaleFactor);
 }

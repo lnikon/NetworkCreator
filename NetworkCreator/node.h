@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGraphicsItem>
 #include <QList>
+#include <QPainterPath>
 
 class GraphWidget;
 class Edge;
@@ -15,9 +16,10 @@ public:
     void addEdge(Edge *);
     QList<Edge *> getEdges() const { return mp_edges; }
 
-    bool advance();
-    QRect boundingRect() const override;
-    QPaintPath shape() const override;
+    void moveAround();
+    bool advancePosition();
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 protected:
@@ -27,9 +29,9 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    QList<Edge *> mp_edges = Q_NULLPTR;
+    QList<Edge *> mp_edges;
     QPointF m_newPos;
-    GraphWidget mp_graph;
+    GraphWidget* mp_graph;
 };
 
 #endif // NODE_H
