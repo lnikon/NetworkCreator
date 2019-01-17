@@ -14,6 +14,9 @@ public:
 
     void itemMoved();
 
+    int gridSize() const { return m_gridSize; }
+    int gridPenSize() const { return m_gridPenSize; }
+
 public slots:
     void zoomIn();
     void zoomOut();
@@ -31,6 +34,12 @@ private:
     int m_timerId;
     QGraphicsScene *mp_scene;
     Node *mp_centerNode;
+
+    // Grid settings
+    // Incapsulate all these settings into different class
+    // Smth like "GridSettings"
+    int m_gridSize;
+    int m_gridPenSize;
 };
 
 #endif // GRAPHWIDGET_H

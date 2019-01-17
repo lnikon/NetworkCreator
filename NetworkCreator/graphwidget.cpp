@@ -1,13 +1,14 @@
 #include <cmath>
 
 #include <QList>
+#include <QVector>
 
 #include "graphwidget.h"
 #include "node.h"
 #include "edge.h"
 
 GraphWidget::GraphWidget(QWidget *parent)
-  : QGraphicsView(parent), m_timerId(0) {
+  : QGraphicsView(parent), m_timerId(0), m_gridSize(100), m_gridPenSize(2) {
   mp_scene = new QGraphicsScene(this);
   mp_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
   mp_scene->setSceneRect(-200, -200, 400, 400);
@@ -136,9 +137,25 @@ void GraphWidget::wheelEvent(QWheelEvent *event) {
   scaleView(std::pow(static_cast<double>(2), -event->delta() / 240.0));
 }
 
-void GraphWidget::drawBackground(QPainter *, const QRectF &)
+void GraphWidget::drawBackground(QPainter *painter, const QRectF & rect)
 {
+  QPen pen;
+  pen.setWidth(m_gridPenSize);
+  pen.setCosmetic(true);
+  pen.setColor(Qt::black);
+  painter->setPen(pen);
 
+  qreal left = int(rect.left()) - (int(rect.left()) % m_gridSize);
+  qreal top = int(rect.top()) - (int(rect.top()) % m_gridSize);
+
+  QVector<QPointF> points;
+  for(qreal x = left; x < rect.right(); x += m_gridSize) {
+    for(qreal y = top; y < rect.bottom(); y += m_gridSize) {
+      points.append(QPointF(x, y));
+    }
+  }
+
+  painter->drawPoints(points);
 }
 
 void GraphWidget::scaleView(qreal scaleFactor)

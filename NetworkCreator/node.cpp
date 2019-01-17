@@ -1,8 +1,10 @@
 #include "node.h"
 #include "edge.h"
+#include "graphwidget.h"
 
 #include <QPainter>
-#include "graphwidget.h"
+#include <QApplication>
+#include <QtMath>
 
 Node::Node(GraphWidget *pGraph)
     : mp_graph(pGraph)
@@ -23,19 +25,22 @@ void Node::addEdge(Edge *pEdge)
 void Node::moveAround()
 {
   if(!scene() || scene()->mouseGrabberItem() == this) {
-    m_newPos = pos();
-    return;
+    if(QApplication::mouseButtons() == Qt::LeftButton) {
+      int gridSize = mp_graph->gridSize();
+      qreal xv = round(pos().x() / gridSize) * gridSize;
+      qreal xy = round(pos().y() / gridSize) * gridSize;
+
+      m_newPos.setX(xv);
+      m_newPos.setY(xy);
+    } else {
+      m_newPos = pos();
+    }
   }
 }
 
 bool Node::advancePosition()
 {
-    if(m_newPos == pos()) {
-        return false;
-    }
-
-    setPos(m_newPos);
-    return true;
+  return !(m_newPos == pos());
 }
 
 QRectF Node::boundingRect() const
