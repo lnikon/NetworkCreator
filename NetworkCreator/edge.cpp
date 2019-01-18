@@ -2,6 +2,7 @@
 
 #include <QPainter>
 #include <QGraphicsItem>
+#include <QtMath>
 
 #include "edge.h"
 #include "node.h"

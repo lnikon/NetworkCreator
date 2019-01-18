@@ -8,7 +8,7 @@
 #include "edge.h"
 
 GraphWidget::GraphWidget(QWidget *parent)
-  : QGraphicsView(parent), m_timerId(0), m_gridSize(100), m_gridPenSize(2) {
+  : QGraphicsView(parent), m_timerId(0), m_gridSize(20), m_gridPenSize(2) {
   mp_scene = new QGraphicsScene(this);
   mp_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
   mp_scene->setSceneRect(-200, -200, 400, 400);
@@ -114,10 +114,6 @@ void GraphWidget::timerEvent(QTimerEvent *)
     if(Node *pNode = qgraphicsitem_cast<Node *>(pItem)) {
       nodes << pNode;
     }
-  }
-
-  foreach(Node *pNode, nodes) {
-    pNode->moveAround();
   }
 
   bool itemsMoved = false;

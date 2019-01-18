@@ -16,7 +16,6 @@ public:
     void addEdge(Edge *);
     QList<Edge *> getEdges() const { return mp_edges; }
 
-    void moveAround();
     bool advancePosition();
     QRectF boundingRect() const override;
     QPainterPath shape() const override;

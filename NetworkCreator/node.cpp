@@ -22,22 +22,6 @@ void Node::addEdge(Edge *pEdge)
     pEdge->adjust();
 }
 
-void Node::moveAround()
-{
-  if(!scene() || scene()->mouseGrabberItem() == this) {
-    if(QApplication::mouseButtons() == Qt::LeftButton) {
-      int gridSize = mp_graph->gridSize();
-      qreal xv = round(pos().x() / gridSize) * gridSize;
-      qreal xy = round(pos().y() / gridSize) * gridSize;
-
-      m_newPos.setX(xv);
-      m_newPos.setY(xy);
-    } else {
-      m_newPos = pos();
-    }
-  }
-}
-
 bool Node::advancePosition()
 {
   return !(m_newPos == pos());
@@ -72,12 +56,20 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     switch(change) {
-    case ItemPositionChange:
+    case ItemPositionChange: {
+        QPointF newPos = value.toPointF();
         foreach(Edge *edge, mp_edges) {
             edge->adjust();
         }
+        if(QApplication::mouseButtons() == Qt::LeftButton) {
+            int gridSize = mp_graph->gridSize();
+            qreal xV = round(newPos.x() / gridSize) * gridSize;
+            qreal yV = round(newPos.y() / gridSize) * gridSize;
+            return QPointF(xV, yV);
+        }
         mp_graph->itemMoved();
         break;
+    }
     default:
         break;
     };
