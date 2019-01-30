@@ -2,18 +2,18 @@
 
 #include <QList>
 #include <QVector>
+#include <QDebug>
 
 #include "graphwidget.h"
 #include "node.h"
 #include "edge.h"
 
-GraphWidget::GraphWidget(QWidget *parent)
-  : QGraphicsView(parent), m_timerId(0), m_gridSize(20), m_gridPenSize(2) {
+GraphWidget::GraphWidget(QWidget *parent, int gridSize, int gridPenSize)
+  : QGraphicsView(parent), m_timerId(0), m_gridSize(gridSize), m_gridPenSize(gridPenSize) {
   mp_scene = new QGraphicsScene(this);
   mp_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
   mp_scene->setSceneRect(-200, -200, 400, 400);
   setScene(mp_scene);
-  setCacheMode(CacheBackground);
   setViewportUpdateMode(BoundingRectViewportUpdate);
   setRenderHint(QPainter::Antialiasing);
   setTransformationAnchor(AnchorUnderMouse);
@@ -66,8 +66,18 @@ GraphWidget::GraphWidget(QWidget *parent)
 void GraphWidget::itemMoved()
 {
   if(!m_timerId) {
-    m_timerId = startTimer(1000 / 25);
+    m_timerId = startTimer(100 / 25);
   }
+}
+
+void GraphWidget::setGridSize(int gridSize)
+{
+  m_gridSize = gridSize;
+}
+
+void GraphWidget::setGridPenSize(int gridPenSize)
+{
+  m_gridPenSize = gridPenSize;
 }
 
 void GraphWidget::zoomIn()
@@ -141,7 +151,10 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF & rect)
   pen.setColor(Qt::black);
   painter->setPen(pen);
 
+  // Returns the x-coordinate of the rectangle's left edge.
   qreal left = int(rect.left()) - (int(rect.left()) % m_gridSize);
+
+  // Returns the y-coordinate of the rectangle's top edge.
   qreal top = int(rect.top()) - (int(rect.top()) % m_gridSize);
 
   QVector<QPointF> points;

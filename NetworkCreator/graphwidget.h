@@ -10,12 +10,16 @@ class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
 public:
-    GraphWidget(QWidget *parent = 0);
+    GraphWidget(QWidget *parent = Q_NULLPTR, int gridSize = 1, int gridPenSize = 1);
 
     void itemMoved();
 
     int gridSize() const { return m_gridSize; }
+    void setGridSize(int gridSize);
     int gridPenSize() const { return m_gridPenSize; }
+    void setGridPenSize(int gridPenSize);
+
+    QGraphicsScene* getScene() const { return mp_scene; }
 
 public slots:
     void zoomIn();
@@ -35,9 +39,6 @@ private:
     QGraphicsScene *mp_scene;
     Node *mp_centerNode;
 
-    // Grid settings
-    // Incapsulate all these settings into different class
-    // Smth like "GridSettings"
     int m_gridSize;
     int m_gridPenSize;
 };

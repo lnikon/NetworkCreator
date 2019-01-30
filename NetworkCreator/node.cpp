@@ -61,6 +61,7 @@ QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange change, const QVaria
         foreach(Edge *edge, mp_edges) {
             edge->adjust();
         }
+
         if(QApplication::mouseButtons() == Qt::LeftButton) {
             int gridSize = mp_graph->gridSize();
             qreal xV = round(newPos.x() / gridSize) * gridSize;

@@ -6,7 +6,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    GraphWidget w;
+//    GraphWidget w;
+//    w.show();
+    MainWindow w;
     w.show();
+
     return a.exec();
 }
