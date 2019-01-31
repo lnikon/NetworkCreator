@@ -41,6 +41,8 @@ private:
 
     int m_gridSize;
     int m_gridPenSize;
+
+    int convertToGridPoint(int pos) const;
 };
 
 #endif // GRAPHWIDGET_H

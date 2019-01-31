@@ -52,15 +52,15 @@ GraphWidget::GraphWidget(QWidget *parent, int gridSize, int gridPenSize)
   mp_scene->addItem(new Edge(node8, node7));
   mp_scene->addItem(new Edge(node9, node8));
 
-  node1->setPos(-50, -50);
-  node2->setPos(0, -50);
-  node3->setPos(50, -50);
-  node4->setPos(-50, 0);
-  mp_centerNode->setPos(0, 0);
-  node6->setPos(50, 0);
-  node7->setPos(-50, 50);
-  node8->setPos(0, 50);
-  node9->setPos(50, 50);
+  node1->setPos(convertToGridPoint(-150), convertToGridPoint(-150));
+  node2->setPos(convertToGridPoint(0), convertToGridPoint(-150));
+  node3->setPos(convertToGridPoint(150), convertToGridPoint(-150));
+  node4->setPos(convertToGridPoint(-150), convertToGridPoint(0));
+  mp_centerNode->setPos(convertToGridPoint(0), convertToGridPoint(0));
+  node6->setPos(convertToGridPoint(150), convertToGridPoint(0));
+  node7->setPos(convertToGridPoint(-150), convertToGridPoint(150));
+  node8->setPos(convertToGridPoint(0), convertToGridPoint(150));
+  node9->setPos(convertToGridPoint(150), convertToGridPoint(150));
 }
 
 void GraphWidget::itemMoved()
@@ -174,4 +174,9 @@ void GraphWidget::scaleView(qreal scaleFactor)
       return;
 
   scale(scaleFactor, scaleFactor);
+}
+
+int GraphWidget::convertToGridPoint(int pos) const
+{
+    return pos - pos % m_gridSize;
 }
