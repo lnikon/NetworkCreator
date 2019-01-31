@@ -14,3 +14,4 @@ Simple application which allows you to create networks in form of graphs and man
 6. Make grid optional(add checkbox in Grid Properties groupbox)
 7. Keep settings in separate file(timerid value, grid properties(and initial values))
 8. Add scene importing/exporting functionality
+9. Integrate python shell
