@@ -10,7 +10,7 @@ class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
 public:
-    GraphWidget(QWidget *parent = Q_NULLPTR, int gridSize = 1, int gridPenSize = 1);
+    GraphWidget(QWidget *parent = Q_NULLPTR, int gridSize = 1);
 
     void itemMoved();
 

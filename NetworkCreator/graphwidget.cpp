@@ -8,8 +8,8 @@
 #include "node.h"
 #include "edge.h"
 
-GraphWidget::GraphWidget(QWidget *parent, int gridSize, int gridPenSize)
-  : QGraphicsView(parent), m_timerId(0), m_gridSize(gridSize), m_gridPenSize(gridPenSize) {
+GraphWidget::GraphWidget(QWidget *parent, int gridSize)
+  : QGraphicsView(parent), m_timerId(0), m_gridSize(gridSize), m_gridPenSize(2) {
   mp_scene = new QGraphicsScene(this);
   mp_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
   mp_scene->setSceneRect(-200, -200, 400, 400);

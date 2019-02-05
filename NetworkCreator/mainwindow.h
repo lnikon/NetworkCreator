@@ -19,7 +19,6 @@ public:
 
 public slots:
     void gridSizeChangedSlot(int size);
-    void gridPenSizeChangedSlot(int size);
 
 private:
     Ui::MainWindow *ui;
