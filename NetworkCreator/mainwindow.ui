@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
   </widget>
@@ -43,14 +43,14 @@
    <property name="minimumSize">
     <size>
      <width>200</width>
-     <height>201</height>
+     <height>302</height>
     </size>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
       <widget class="QGroupBox" name="gridPropertiesGroupBox">
        <property name="title">
@@ -96,6 +96,39 @@
            </widget>
           </item>
          </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="graphConstructorGroupBox">
+       <property name="title">
+        <string>Graph Constructor</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="manipulatePushButton">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text">
+           <string>Manipulate</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="nodePushButton">
+          <property name="text">
+           <string>Node</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="edgePushButton">
+          <property name="text">
+           <string>Edge</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

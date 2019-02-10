@@ -4,8 +4,10 @@
 #include <QObject>
 #include <QGraphicsView>
 #include <QWidget>
+#include <QSharedPointer>
 
 class Node;
+class NodeState;
 class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
@@ -16,10 +18,18 @@ public:
 
     int gridSize() const { return m_gridSize; }
     void setGridSize(int gridSize);
+
     int gridPenSize() const { return m_gridPenSize; }
     void setGridPenSize(int gridPenSize);
 
     QGraphicsScene* getScene() const { return mp_scene; }
+
+    QWeakPointer<NodeState> getNodeState() const { return mp_nodeState; }
+    void setNodeState(QSharedPointer<NodeState> pNodeState)
+    {
+        mp_nodeState.reset();
+        mp_nodeState = pNodeState;
+    }
 
 public slots:
     void zoomIn();
@@ -28,17 +38,21 @@ public slots:
 protected:
     void keyPressEvent(QKeyEvent *pEvent) override;
     void timerEvent(QTimerEvent *) override;
-#if QT_CONFIG(wheelevent)
     void wheelEvent(QWheelEvent *event) override;
-#endif
     void drawBackground(QPainter *painter, const QRectF &rect) override;
     void scaleView(qreal scaleFactor);
 
 private:
+    enum class GraphWidgetState { Manipulate = 0,
+                              Node = 1,
+                              Edge = 2 };
+
     int m_timerId;
+    GraphWidgetState m_graphState;
+//    NodeState* mp_nodeState;
+    QSharedPointer<NodeState> mp_nodeState;
     QGraphicsScene *mp_scene;
     Node *mp_centerNode;
-
     int m_gridSize;
     int m_gridPenSize;
 

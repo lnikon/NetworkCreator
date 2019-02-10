@@ -28,13 +28,19 @@ SOURCES += \
         mainwindow.cpp \
     node.cpp \
     edge.cpp \
-    graphwidget.cpp
+    graphwidget.cpp \
+    nodestate.cpp \
+    nodemanipulatestate.cpp \
+    nodenodestate.cpp
 
 HEADERS += \
         mainwindow.h \
     node.h \
     edge.h \
-    graphwidget.h
+    graphwidget.h \
+    nodestate.h \
+    nodemanipulatestate.h \
+    nodenodestate.h
 
 FORMS += \
         mainwindow.ui

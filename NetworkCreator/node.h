@@ -5,13 +5,18 @@
 #include <QGraphicsItem>
 #include <QList>
 #include <QPainterPath>
+#include <QWeakPointer>
 
 class GraphWidget;
 class Edge;
+class NodeState;
 class Node : public QGraphicsItem
 {
 public:
-    Node(GraphWidget *);
+    Node(GraphWidget *, QSharedPointer<NodeState>);
+
+    QWeakPointer<NodeState> getState() const { return mp_state; }
+    void setState(QSharedPointer<NodeState> pState) { mp_state = pState; }
 
     void addEdge(Edge *);
     QList<Edge *> getEdges() const { return mp_edges; }
@@ -28,9 +33,10 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    QList<Edge *> mp_edges;
     QPointF m_newPos;
+    QList<Edge *> mp_edges;
     GraphWidget* mp_graph;
+    QWeakPointer<NodeState> mp_state;
 };
 
 #endif // NODE_H

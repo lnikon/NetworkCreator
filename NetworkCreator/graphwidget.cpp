@@ -1,18 +1,30 @@
+// C++/STL headers
 #include <cmath>
 
+// Qt headers
 #include <QList>
 #include <QVector>
 #include <QDebug>
 
+// Project headers
 #include "graphwidget.h"
 #include "node.h"
+#include "nodestate.h"
+#include "nodemanipulatestate.h"
 #include "edge.h"
 
 GraphWidget::GraphWidget(QWidget *parent, int gridSize)
-  : QGraphicsView(parent), m_timerId(0), m_gridSize(gridSize), m_gridPenSize(2) {
+  : QGraphicsView(parent),
+    m_timerId(0),
+    m_graphState(GraphWidgetState::Manipulate),
+    mp_nodeState(QSharedPointer<NodeManipulateState>(new NodeManipulateState)),
+    m_gridSize(gridSize),
+    m_gridPenSize(2) {
+
   mp_scene = new QGraphicsScene(this);
   mp_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
   mp_scene->setSceneRect(-200, -200, 400, 400);
+
   setScene(mp_scene);
   setViewportUpdateMode(BoundingRectViewportUpdate);
   setRenderHint(QPainter::Antialiasing);
@@ -21,15 +33,16 @@ GraphWidget::GraphWidget(QWidget *parent, int gridSize)
   setMinimumSize(400, 400);
   setWindowTitle(tr("NetworkCreator 3000"));
 
-  Node *node1 = new Node(this);
-  Node *node2 = new Node(this);
-  Node *node3 = new Node(this);
-  Node *node4 = new Node(this);
-  mp_centerNode = new Node(this);
-  Node *node6 = new Node(this);
-  Node *node7 = new Node(this);
-  Node *node8 = new Node(this);
-  Node *node9 = new Node(this);
+  Node *node1 = new Node(this, mp_nodeState);
+  Node *node2 = new Node(this, mp_nodeState);
+  Node *node3 = new Node(this, mp_nodeState);
+  Node *node4 = new Node(this, mp_nodeState);
+  mp_centerNode = new Node(this, mp_nodeState);
+  Node *node6 = new Node(this, mp_nodeState);
+  Node *node7 = new Node(this, mp_nodeState);
+  Node *node8 = new Node(this, mp_nodeState);
+  Node *node9 = new Node(this, mp_nodeState);
+
   mp_scene->addItem(node1);
   mp_scene->addItem(node2);
   mp_scene->addItem(node3);

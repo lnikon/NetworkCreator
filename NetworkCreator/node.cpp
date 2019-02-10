@@ -1,13 +1,18 @@
 #include "node.h"
 #include "edge.h"
 #include "graphwidget.h"
+#include "nodestate.h"
+#include "nodemanipulatestate.h"
 
 #include <QPainter>
 #include <QApplication>
 #include <QtMath>
+#include <QMessageBox>
 
-Node::Node(GraphWidget *pGraph)
-    : mp_graph(pGraph)
+Node::Node(GraphWidget *pGraph,
+           QSharedPointer<NodeState> pState)
+    : mp_graph(pGraph),
+      mp_state(pState)
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -40,7 +45,9 @@ QPainterPath Node::shape() const
     return path;
 }
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void Node::paint(QPainter *painter,
+                 const QStyleOptionGraphicsItem *,
+                 QWidget *)
 {
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::darkGray);
@@ -53,29 +60,11 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->drawEllipse(-10, -10, 20, 20);
 }
 
-QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange change,
+                          const QVariant &value)
 {
-    switch(change) {
-    case ItemPositionChange: {
-        QPointF newPos = value.toPointF();
-        foreach(Edge *edge, mp_edges) {
-            edge->adjust();
-        }
-
-        if(QApplication::mouseButtons() == Qt::LeftButton) {
-            int gridSize = mp_graph->gridSize();
-            qreal xV = round(newPos.x() / gridSize) * gridSize;
-            qreal yV = round(newPos.y() / gridSize) * gridSize;
-            return QPointF(xV, yV);
-        }
-        mp_graph->itemMoved();
-        break;
-    }
-    default:
-        break;
-    };
-
-    return QGraphicsItem::itemChange(change, value);
+    QVariant localValue = mp_state.lock()->itemChange(change, value, mp_edges, mp_graph);
+    return QGraphicsItem::itemChange(change, localValue);
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)

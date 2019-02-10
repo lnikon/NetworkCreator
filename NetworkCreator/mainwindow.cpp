@@ -4,6 +4,8 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "nodestate.h"
+#include "nodemanipulatestate.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,11 +17,25 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->gridSizeSlider->setMaximum(99);
     ui->gridSizeSlider->setMinimum(1);
 
-    // Predefined values for sliders
-    int preferredGridSize = ui->gridSizeSlider->maximum() / 3;
-
     // Connection sliders to apporpiate functions
     connect(ui->gridSizeSlider, &QSlider::valueChanged, this, &MainWindow::gridSizeChangedSlot);
+
+    // Only one button should be in pressed state at the given time
+    // This works only when mentioned button belongs to the same parent
+    ui->manipulatePushButton->setAutoExclusive(true);
+    ui->nodePushButton->setAutoExclusive(true);
+    ui->edgePushButton->setAutoExclusive(true);
+
+    // Button should be checked till another one is clicked
+    ui->manipulatePushButton->setCheckable(true);
+    ui->nodePushButton->setCheckable(true);
+    ui->edgePushButton->setCheckable(true);
+
+    // Default state is manipulate
+//    ui->manipulatePushButton->click();
+
+    // Predefined values for sliders
+    int preferredGridSize = ui->gridSizeSlider->maximum() / 3;
 
     // Creating graph widget, setting preferred values
     mp_graphWidget = new GraphWidget(this, preferredGridSize);
@@ -29,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // QSlider::valueChanged() signal,
     // which will cause MainWindow::grisSizeChangeSlot() to be called.
     // So, we need to set initial preferred value for the slider
+
     // when the GraphWidget creation finished, in order to avoid segmentaion fault.
     ui->gridSizeSlider->setValue(preferredGridSize);
 
@@ -51,4 +68,19 @@ void MainWindow::gridSizeChangedSlot(int size)
 
     // Redraw grid using new grid size
     mp_graphWidget->getScene()->update();
+}
+
+void MainWindow::on_manipulatePushButton_clicked()
+{
+    mp_graphWidget->setNodeState(QSharedPointer<NodeState>(new NodeManipulateState));
+}
+
+void MainWindow::on_nodePushButton_clicked()
+{
+
+}
+
+void MainWindow::on_edgePushButton_clicked()
+{
+
 }
