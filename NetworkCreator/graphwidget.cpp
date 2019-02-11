@@ -34,14 +34,23 @@ GraphWidget::GraphWidget(QWidget *parent, int gridSize)
   setWindowTitle(tr("NetworkCreator 3000"));
 
   Node *node1 = new Node(this, mp_nodeState);
+  mp_nodes.push_back(node1);
   Node *node2 = new Node(this, mp_nodeState);
+  mp_nodes.push_back(node2);
   Node *node3 = new Node(this, mp_nodeState);
+  mp_nodes.push_back(node3);
   Node *node4 = new Node(this, mp_nodeState);
+  mp_nodes.push_back(node4);
   mp_centerNode = new Node(this, mp_nodeState);
+  mp_nodes.push_back(mp_centerNode);
   Node *node6 = new Node(this, mp_nodeState);
+  mp_nodes.push_back(node6);
   Node *node7 = new Node(this, mp_nodeState);
+  mp_nodes.push_back(node7);
   Node *node8 = new Node(this, mp_nodeState);
+  mp_nodes.push_back(node8);
   Node *node9 = new Node(this, mp_nodeState);
+  mp_nodes.push_back(node9);
 
   mp_scene->addItem(node1);
   mp_scene->addItem(node2);

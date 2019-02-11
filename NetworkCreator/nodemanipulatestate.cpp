@@ -34,7 +34,7 @@ QVariant NodeManipulateState::itemChange(QGraphicsItem::GraphicsItemChange chang
         // Should not work, when scene isn't in "Edge" mode
         case QGraphicsItem::ItemSelectedChange: {
             QString msg = value.toString();
-            qDebug() << "msg: " << msg << "\n";
+//            qDebug() << "msg: " << msg << "\n";
             break;
         }
         default:

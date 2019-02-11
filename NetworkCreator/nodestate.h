@@ -4,13 +4,17 @@
 #include <QObject>
 #include <QGraphicsItem>
 #include <QVariant>
+#include <QDebug>
 
 class Edge;
 class GraphWidget;
 class NodeState
 {
     public:
-        NodeState() = default;
+        NodeState()
+        {
+            qDebug() << " *** LOG: virtual NodeState()\n";
+        }
         virtual ~NodeState() = default;
 
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,

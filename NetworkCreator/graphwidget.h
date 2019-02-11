@@ -5,6 +5,11 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QSharedPointer>
+#include <QDebug>
+#include <QVector>
+
+#include "node.h"
+#include "nodemanipulatestate.h"
 
 class Node;
 class NodeState;
@@ -25,10 +30,13 @@ public:
     QGraphicsScene* getScene() const { return mp_scene; }
 
     QWeakPointer<NodeState> getNodeState() const { return mp_nodeState; }
-    void setNodeState(QSharedPointer<NodeState> pNodeState)
+    void setNodeStateToManipulate()
     {
-        mp_nodeState.reset();
-        mp_nodeState = pNodeState;
+        mp_nodeState = QSharedPointer<NodeState>(new NodeManipulateState);
+
+        foreach (Node *pNode, mp_nodes) {
+            pNode->setState(mp_nodeState);
+        }
     }
 
 public slots:
@@ -55,7 +63,7 @@ private:
     Node *mp_centerNode;
     int m_gridSize;
     int m_gridPenSize;
-
+    QVector<Node *> mp_nodes;
     int convertToGridPoint(int pos) const;
 };
 

@@ -1,11 +1,11 @@
-#include <QIntValidator>
-#include <QSlider>
-#include <QDebug>
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "nodestate.h"
 #include "nodemanipulatestate.h"
+
+#include <QIntValidator>
+#include <QSlider>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -72,7 +72,9 @@ void MainWindow::gridSizeChangedSlot(int size)
 
 void MainWindow::on_manipulatePushButton_clicked()
 {
-    mp_graphWidget->setNodeState(QSharedPointer<NodeState>(new NodeManipulateState));
+//    qDebug() << " *** LOG: Manipulate push_button clicked\n";
+//    mp_graphWidget->setNodeState(QSharedPointer<NodeState>(new NodeManipulateState));
+    mp_graphWidget->setNodeStateToManipulate();
 }
 
 void MainWindow::on_nodePushButton_clicked()

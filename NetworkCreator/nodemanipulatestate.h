@@ -2,13 +2,18 @@
 #define NODEMANIPULATESTATE_H
 
 #include <QObject>
+#include <QDebug>
 
 #include "nodestate.h"
 
 class NodeManipulateState : public NodeState
 {
     public:
-        NodeManipulateState() = default;
+        NodeManipulateState()
+        {
+            qDebug() << " *** LOG: NodeManipulateState()\n";
+        }
+
         virtual ~NodeManipulateState() override = default;
 
         // NodeState Interface
